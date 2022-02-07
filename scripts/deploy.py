@@ -1,4 +1,4 @@
-from brownie import accounts, config
+from brownie import accounts, config, SimpleStorage
 import os
 
 
@@ -17,6 +17,23 @@ def deploy_simple_storage():
     account = accounts.add(config["wallets"]["from_key"])
 
     print(account)
+
+    ## Deploy to chain
+    simple_storage = SimpleStorage.deploy({"from": account})
+    print(simple_storage)
+
+    ## Read
+    stored_value = simple_storage.retrieve()
+    print(stored_value)
+
+    ## Write
+    transaction = simple_storage.store(1500, {"from": account})
+    transaction.wait(1)
+    print(transaction)
+
+    ## Read again
+    stored_value = simple_storage.retrieve()
+    print(stored_value)
 
 
 def main():
