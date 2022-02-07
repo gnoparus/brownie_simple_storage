@@ -1,4 +1,4 @@
-from brownie import accounts, config, SimpleStorage
+from brownie import accounts, config, SimpleStorage, network
 import os
 
 
@@ -13,9 +13,10 @@ def deploy_simple_storage():
     # ## Private key in environment variable
     # account = accounts.add(os.getenv("PRIVATE_KEY1"))
 
-    ## Private key in environment variable via config
-    account = accounts.add(config["wallets"]["from_key"])
+    # ## Private key in environment variable via config
+    # account = accounts.add(config["wallets"]["from_key"])
 
+    account = get_account()
     print(account)
 
     ## Deploy to chain
@@ -34,6 +35,13 @@ def deploy_simple_storage():
     ## Read again
     stored_value = simple_storage.retrieve()
     print(stored_value)
+
+
+def get_account():
+    if network.show_active() == "development":
+        return accounts[0]
+    else:
+        return accounts.add(config["wallets"]["from_key"])
 
 
 def main():
