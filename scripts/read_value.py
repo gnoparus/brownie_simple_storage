@@ -2,7 +2,10 @@ from brownie import network, SimpleStorage, accounts, config
 
 
 def read_contract():
-    print(SimpleStorage[-1])
+    last_contract = SimpleStorage[-1]
+    print(last_contract)
+
+    print(last_contract.retrieve())
 
 
 def main():
